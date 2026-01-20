@@ -29,7 +29,7 @@ def _escape(variables: dict) -> dict:
         if value.isalnum():
             return value
 
-        espaced_new_lines: str = value.replace("\n", "\\n")
+        espaced_new_lines: str = value.replace("\n", r"\n")
         return f'"{espaced_new_lines}"'
 
     return toolz.valmap(_escape_value, variables)

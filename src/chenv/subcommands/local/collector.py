@@ -32,8 +32,10 @@ def collect(filename: Optional[str]) -> Output:
         if not env_files:
             fatal(__name__, "No local options available.", 2)
 
-        click.echo(f"""Local options: {", ".join(click.style(env_file, fg="magenta")
-            for env_file in env_files)}""")
+        click.echo(
+            f"""Local options: {", ".join(click.style(env_file, fg="magenta")
+                for env_file in env_files)}"""
+        )
         file_suffix = questionary.autocomplete("Choose file:", choices=env_files).ask()
 
     variables = fs.load(file_suffix=file_suffix)

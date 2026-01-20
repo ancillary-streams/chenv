@@ -1,4 +1,5 @@
 """create a blank .env file."""
+
 from typing import Optional
 
 import click

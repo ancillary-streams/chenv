@@ -1,9 +1,9 @@
 """Nox sessions."""
+
 from typing import Any
 
 import nox
 from nox.sessions import Session
-
 
 package = "chenv"
 nox.options.sessions = "lint", "safety", "mypy", "tests"

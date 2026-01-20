@@ -1,4 +1,5 @@
 """Command-line interface."""
+
 from typing import Optional
 
 import click

@@ -1,4 +1,5 @@
 """user inteaction utilities."""
+
 from enum import Enum
 from functools import wraps
 import os

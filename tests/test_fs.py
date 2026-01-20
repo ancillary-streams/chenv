@@ -1,4 +1,5 @@
 """Test cases for the `fs` module."""
+
 from itertools import permutations
 import os
 import tempfile

@@ -1,4 +1,5 @@
 """show current link of the `.env` file."""
+
 import os
 
 import click

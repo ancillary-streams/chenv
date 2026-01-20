@@ -13,11 +13,11 @@ locations = "src", "tests", "noxfile.py", "docs/conf.py"
 
 def install_with_constraints(session: Session, *args: str, **kwargs: Any) -> None:
     """Install packages constrained by Poetry's lock file."""
-    with tempfile.NamedTemporaryFile() as requirements:
+    with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as requirements:
         session.run(
             "poetry",
             "export",
-            "--dev",
+            "--only=dev",
             "--without-hashes",
             "--format=requirements.txt",
             f"--output={requirements.name}",
@@ -55,11 +55,11 @@ def lint(session: Session) -> None:
 @nox.session(python="3.14")
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
-    with tempfile.NamedTemporaryFile() as requirements:
+    with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as requirements:
         session.run(
             "poetry",
             "export",
-            "--dev",
+            "--only=dev",
             "--format=requirements.txt",
             "--without-hashes",
             f"--output={requirements.name}",
@@ -81,7 +81,7 @@ def mypy(session: Session) -> None:
 def tests(session: Session) -> None:
     """Run the test suite."""
     args = session.posargs or ["--cov", "-m", "not e2e"]
-    session.run("poetry", "install", "--no-dev", external=True)
+    session.run("poetry", "install", "--only=main", external=True)
     install_with_constraints(session, "coverage[toml]", "pytest", "pytest-cov", "pytest-mock")
     session.run("pytest", *args)
 
@@ -90,7 +90,7 @@ def tests(session: Session) -> None:
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     args = session.posargs or ["-m", "not e2e"]
-    session.run("poetry", "install", "--no-dev", external=True)
+    session.run("poetry", "install", "--only=main", external=True)
     install_with_constraints(session, "pytest", "pytest-mock", "typeguard")
     session.run("pytest", f"--typeguard-packages={package}", *args)
 
@@ -99,7 +99,7 @@ def typeguard(session: Session) -> None:
 def xdoctest(session: Session) -> None:
     """Run examples with xdoctest."""
     args = session.posargs or ["all"]
-    session.run("poetry", "install", "--no-dev", external=True)
+    session.run("poetry", "install", "--only=main", external=True)
     install_with_constraints(session, "xdoctest")
     session.run("python", "-m", "xdoctest", package, *args)
 
@@ -115,6 +115,6 @@ def coverage(session: Session) -> None:
 @nox.session(python="3.14")
 def docs(session: Session) -> None:
     """Build the documentation."""
-    session.run("poetry", "install", "--no-dev", external=True)
+    session.run("poetry", "install", "--only=main", external=True)
     install_with_constraints(session, "sphinx", "sphinx-autodoc-typehints")
     session.run("sphinx-build", "docs", "docs/_build")

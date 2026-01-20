@@ -1,4 +1,5 @@
 """Command-line interface."""
+
 from typing import Optional
 
 import click
@@ -20,7 +21,7 @@ def cli(ctx: Context) -> None:
     click.secho("chenv. modern local environment management", fg=Color.GREEN.value)
 
 
-@cli.resultcallback()
+@cli.result_callback()
 def _pipeline(result: Optional[Output]) -> None:
     try:
         if result is None or result.file_suffix is None:

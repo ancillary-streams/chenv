@@ -1,4 +1,5 @@
 """choose between local, existing, .env files."""
+
 import os
 from typing import Optional
 
@@ -33,7 +34,7 @@ def collect(filename: Optional[str]) -> Output:
 
         click.echo(
             f"""Local options: {", ".join(click.style(env_file, fg="magenta")
-            for env_file in env_files)}"""
+                for env_file in env_files)}"""
         )
         file_suffix = questionary.autocomplete("Choose file:", choices=env_files).ask()
 

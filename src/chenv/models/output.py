@@ -1,4 +1,5 @@
 """declares outputs used to generate `.env`-style files."""
+
 from dataclasses import dataclass
 from typing import Dict
 

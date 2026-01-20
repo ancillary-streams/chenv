@@ -1,7 +1,7 @@
 """Sphinx configuration."""
+
 from datetime import datetime
 from typing import List
-
 
 project = "chenv"
 author = "Jonathan Shemer"

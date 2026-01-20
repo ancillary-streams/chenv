@@ -1,0 +1,3 @@
+[installer]
+# Prefer binary wheels to avoid build issues
+modern-installation = true

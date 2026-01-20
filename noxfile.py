@@ -1,5 +1,4 @@
 """Nox sessions."""
-import tempfile
 from typing import Any
 
 import nox
@@ -12,18 +11,8 @@ locations = "src", "tests", "noxfile.py", "docs/conf.py"
 
 
 def install_with_constraints(session: Session, *args: str, **kwargs: Any) -> None:
-    """Install packages constrained by Poetry's lock file."""
-    with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as requirements:
-        session.run(
-            "poetry",
-            "export",
-            "--only=dev",
-            "--without-hashes",
-            "--format=requirements.txt",
-            f"--output={requirements.name}",
-            external=True,
-        )
-        session.install(f"--constraint={requirements.name}", *args, **kwargs)
+    """Install packages without constraints."""
+    session.install(*args, **kwargs)
 
 
 @nox.session(python="3.14")
@@ -55,18 +44,8 @@ def lint(session: Session) -> None:
 @nox.session(python="3.14")
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
-    with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as requirements:
-        session.run(
-            "poetry",
-            "export",
-            "--only=dev",
-            "--format=requirements.txt",
-            "--without-hashes",
-            f"--output={requirements.name}",
-            external=True,
-        )
-        install_with_constraints(session, "safety")
-        session.run("safety", "check", f"--file={requirements.name}", "--full-report")
+    session.run("poetry", "install", "--only=dev", external=True)
+    session.run("poetry", "run", "safety", "check", "--json", external=True)
 
 
 @nox.session(python=["3.10", "3.11", "3.12", "3.13", "3.14"])

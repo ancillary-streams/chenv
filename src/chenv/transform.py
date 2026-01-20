@@ -30,7 +30,7 @@ def _escape(variables: dict) -> dict:
             return value
 
         espaced_new_lines: str = value.replace("\n", r"\n")
-        return f'"{espaced_new_lines}"'
+        return f"{espaced_new_lines!r}"
 
     return toolz.valmap(_escape_value, variables)
 

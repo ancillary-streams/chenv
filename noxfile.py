@@ -15,7 +15,7 @@ def install_with_constraints(session: Session, *args: str, **kwargs: Any) -> Non
     session.install(*args, **kwargs)
 
 
-@ntml:session(python="3.13")
+@nox.session(python="3.13")
 def black(session: Session) -> None:
     """Run black code formatter."""
     args = session.posargs or locations

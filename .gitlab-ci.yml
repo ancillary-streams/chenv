@@ -5,8 +5,10 @@ stages:
 test-3.8:
   stage: test
   image: python:3.8
+  variables:
+    VIRTUALENV_PIP: "23.3.1"
   script:
-    - pip install 'pip<24' 'poetry<2' nox
+    - pip install 'poetry<2' nox
     - nox -p 3.8
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "master"'
@@ -15,8 +17,10 @@ test-3.8:
 test-3.9:
   stage: test
   image: python:3.9
+  variables:
+    VIRTUALENV_PIP: "23.3.1"
   script:
-    - pip install 'pip<24' 'poetry<2' nox
+    - pip install 'poetry<2' nox
     - nox --sessions tests-3.9
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop" || $CI_COMMIT_BRANCH == "master"'

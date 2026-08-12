@@ -5,6 +5,8 @@ stages:
 test-3.8:
   stage: test
   image: python:3.8
+  tags:
+    - hubu-eks-stage
   script:
     - pip install 'poetry<2' nox
     - nox -p 3.8 -s lint mypy pytype tests
@@ -15,6 +17,8 @@ test-3.8:
 test-3.9:
   stage: test
   image: python:3.9
+  tags:
+    - hubu-eks-stage
   script:
     - pip install 'poetry<2' nox
     - nox --sessions tests-3.9
@@ -25,6 +29,8 @@ test-3.9:
 publish-test-pypi:
   stage: publish
   image: python:3.8
+  tags:
+    - hubu-eks-stage
   script:
     - pip install 'pip<24' 'poetry<2'
     - >-
@@ -39,9 +45,11 @@ publish-test-pypi:
 publish-pypi:
   stage: publish
   image: python:3.8
+  tags:
+    - hubu-eks-stage
   script:
     - pip install 'pip<24' 'poetry<2' nox
-    - nox -p 3.8
+    - nox -p 3.8 -s lint mypy pytype tests
     - poetry build
     - poetry publish --username=__token__ --password=$PYPI_TOKEN
   rules:

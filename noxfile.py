@@ -1,4 +1,5 @@
 """Nox sessions."""
+import re
 import tempfile
 from typing import Any
 
@@ -23,6 +24,11 @@ def install_with_constraints(session: Session, *args: str, **kwargs: Any) -> Non
             f"--output={requirements.name}",
             external=True,
         )
+        with open(requirements.name) as f:
+            content = f.read()
+        with open(requirements.name, "w") as f:
+            # pip >= 20.3 rejects extras (e.g. coverage[toml]) in --constraint files
+            f.write(re.sub(r"\[[\w,\s]+\]", "", content))
         session.install(f"--constraint={requirements.name}", *args, **kwargs)
 
 
